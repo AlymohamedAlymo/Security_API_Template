@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "0490537c-32e9-46ba-acdb-0503e466aaf0",
+		"name": "API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17716545",
+		"_collection_link": "https://blue-desert-928628.postman.co/workspace/Team-Workspace~73b2f1c5-382b-42fa-86c5-7dab9dca5b8f/collection/17716545-0490537c-32e9-46ba-acdb-0503e466aaf0?action=share&source=collection_link&creator=17716545"
+	},
+	"item": [
+		{
+			"name": "IIS",
+			"item": [
+				{
+					"name": "Parameters",
+					"item": [
+						{
+							"name": "Add New User From Parameters",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{IISurl}}/Users/AddNewUser?username=Tota&password=12345",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "Tota"
+										},
+										{
+											"key": "password",
+											"value": "12345"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User From Parameters",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"mo\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IISurl}}/Users/Login2?username=mo&password=12345",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"Login2"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "mo"
+										},
+										{
+											"key": "password",
+											"value": "12345"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Body",
+					"item": [
+						{
+							"name": "Add New User From Body",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"MO\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IISurl}}/Users/AddNewUser2",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add New User From Body With Exception",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"123456\",\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IISurl}}/Users/AddNewUser2",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User From Body",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"mo\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IISurl}}/Users/Login",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"Login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "URL",
+					"item": [
+						{
+							"name": "Add New User From URL",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"MO\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IISurl}}/Users/AddNewUser2",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User From URL",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"mo\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{IISurl}}/Users/Login?username=mo&password=12345",
+									"host": [
+										"{{IISurl}}"
+									],
+									"path": [
+										"Users",
+										"Login"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "mo"
+										},
+										{
+											"key": "password",
+											"value": "12345"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{IISurl}}/Users",
+							"host": [
+								"{{IISurl}}"
+							],
+							"path": [
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJtbyIsIm5iZiI6MTczMDMwMTY4NSwiZXhwIjoxNzMwMzAzNDg1LCJpYXQiOjE3MzAzMDE2ODV9.9Qz6sMTVpXsn1IjH2p3muj5t8ID81uRtuk54NENVCsN4APgTlNXJ6nBJlzKlIr-Np0xxVS53gxbUxicV4ptjsA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{IISurl}}/Users/4",
+							"host": [
+								"{{IISurl}}"
+							],
+							"path": [
+								"Users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "https",
+			"item": [
+				{
+					"name": "Parameters",
+					"item": [
+						{
+							"name": "Add New User From Parameters",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/AddNewUser?username=Totaaly&password=12345",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "Totaaly"
+										},
+										{
+											"key": "password",
+											"value": "12345"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User From Parameters",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"mo\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/Login2?username=mo&password=12345",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"Login2"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "mo"
+										},
+										{
+											"key": "password",
+											"value": "12345"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Body",
+					"item": [
+						{
+							"name": "Login User From Body",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"mo\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/Login",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"Login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add New User From Body",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"MOmo\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/AddNewUser2",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add New User From Body With Exception",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"123456\",\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/AddNewUser2",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "URL",
+					"item": [
+						{
+							"name": "Add New User From URL",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/AddNewUser/moaly/12345",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"AddNewUser",
+										"moaly",
+										"12345"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User From URL",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HTTPSurl}}/Users/Login/mo/12345",
+									"host": [
+										"{{HTTPSurl}}"
+									],
+									"path": [
+										"Users",
+										"Login",
+										"mo",
+										"12345"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HTTPSurl}}/Users",
+							"host": [
+								"{{HTTPSurl}}"
+							],
+							"path": [
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HTTPSurl}}/Users/2",
+							"host": [
+								"{{HTTPSurl}}"
+							],
+							"path": [
+								"Users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "IISurl",
+			"value": "https://localhost:44342/api"
+		},
+		{
+			"key": "HTTPSurl",
+			"value": "https://localhost:7051/api"
+		}
+	]
+}

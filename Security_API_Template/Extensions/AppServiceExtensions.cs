@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Security_API_Template.Data.Context;
 using Security_API_Template.Interfaces;
+using Security_API_Template.Repository;
 using Security_API_Template.Services;
 
 namespace Security_API_Template.Extensions
@@ -19,6 +20,8 @@ namespace Security_API_Template.Extensions
             services.AddCors();
 
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUser, UserRepository>();
+
 
             return services;
         }

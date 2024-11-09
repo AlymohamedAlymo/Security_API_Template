@@ -10,6 +10,8 @@ using System.Text;
 
 namespace Security_API_Template.Controllers
 {
+    [Authorize]
+
     public class UsersController(DataContext dataContext, ITokenService tokenService) : BaseApiController
     {
         /// <summary>
@@ -17,7 +19,6 @@ namespace Security_API_Template.Controllers
         /// </summary>
         /// <returns></returns>
         /// 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUsers>>> GetUsers()
         {
@@ -30,7 +31,6 @@ namespace Security_API_Template.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         /// 
-        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AppUsers>> GetUser(int id)
         {
@@ -133,6 +133,8 @@ namespace Security_API_Template.Controllers
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+        /// 
+        [AllowAnonymous]
         [HttpPost("Login/{username}/{password}")]
         public async Task<ActionResult<UserTokenDTO>> Login(string username, string password)
         {
@@ -155,6 +157,8 @@ namespace Security_API_Template.Controllers
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+        /// 
+        [AllowAnonymous]
         [HttpPost("Login2")]
         public async Task<ActionResult<UserTokenDTO>> Login2(string username, string password)
         {
@@ -176,6 +180,8 @@ namespace Security_API_Template.Controllers
         /// </summary>
         /// <param name="userDTO"></param>
         /// <returns></returns>
+        /// 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<ActionResult<UserTokenDTO>> Login([FromBody] UserDTO userDTO)
         {

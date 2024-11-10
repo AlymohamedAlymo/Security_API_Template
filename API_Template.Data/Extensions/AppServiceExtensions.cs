@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Security_API_Template.Data.Context;
 using Security_API_Template.Interfaces;
 using Security_API_Template.Repository;
@@ -21,7 +23,7 @@ namespace Security_API_Template.Extensions
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUser, UserRepository>();
-
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
         }

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API_Template.Data.Data.DTOs;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Security_API_Template.Data.Context;
 using Security_API_Template.Data.DTOs;
 using Security_API_Template.Data.Entites;
 using Security_API_Template.Interfaces;
+using Security_API_Template.Repository;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,7 +15,7 @@ namespace Security_API_Template.Controllers
 {
     [Authorize]
 
-    public class UsersController(DataContext dataContext, ITokenService tokenService) : BaseApiController
+    public class UsersController(IUser _Iuser, IMapper mapper) : BaseApiController
     {
         /// <summary>
         /// ///////////////////////////////////Get All Users
@@ -20,9 +23,11 @@ namespace Security_API_Template.Controllers
         /// <returns></returns>
         /// 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUsers>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
         {
-            return Ok(await dataContext.Users.ToListAsync());
+            var users = await _Iuser.GetUsersAsync();
+            var userReterned = mapper.Map<MemberDTO>(users);
+            return Ok(userReterned);
         }
 
         /// <summary>
@@ -32,10 +37,25 @@ namespace Security_API_Template.Controllers
         /// <returns></returns>
         /// 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<AppUsers>> GetUser(int id)
+        public async Task<ActionResult<MemberDTO>> GetUserById(int id)
         {
-            var user = await dataContext.Users.FindAsync(id);
-            return user == null ? NotFound() : Ok(user);
+            var user = await _Iuser.GetUserByIdAsync(id);
+            var userReterned = mapper.Map<MemberDTO>(user);
+            return user == null ? NotFound() : userReterned;
+        }
+
+        /// <summary>
+        /// /////////////////////////////////Get User By UserName
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// 
+        [HttpGet("{UserName}")]
+        public async Task<ActionResult<MemberDTO>> GetUserByUserName(string UserName)
+        {
+            var user = await _Iuser.GetUserByUserNameAsync(UserName);
+            var userReterned = mapper.Map<MemberDTO>(user);
+            return user == null ? NotFound() : userReterned;
         }
 
 
@@ -48,23 +68,23 @@ namespace Security_API_Template.Controllers
         /// <param name="UserName"></param>
         /// <param name="Password"></param>
         /// <returns></returns>
-        [HttpPost("AddNewUser/{UserName}/{Password}")]
-        public async Task<ActionResult<int>> AddNewUser(string UserName, string Password)
-        {
-            if (await UserExists(UserName)) { return BadRequest("اسم المستخدم مسجل من قبل..الرجاء اختيار اسم مستخدم جديد"); }
-            using var HashPass = new HMACSHA512();
-            //var user = new AppUsers
-            //{
-            //    UserName = UserName.ToLower(),
-            //    PasswordHash = HashPass.ComputeHash(Encoding.UTF8.GetBytes(Password)),
-            //    PasswordSalt = HashPass.Key
-            //};
-            //dataContext.Users.Add(user);
-            //int Result = await dataContext.SaveChangesAsync();
-            //return Ok(Result);
-            return Ok();
+        //[HttpPost("AddNewUser/{UserName}/{Password}")]
+        //public async Task<ActionResult<int>> AddNewUser(string UserName, string Password)
+        //{
+        //    if (await UserExists(UserName)) { return BadRequest("اسم المستخدم مسجل من قبل..الرجاء اختيار اسم مستخدم جديد"); }
+        //    using var HashPass = new HMACSHA512();
+        //    //var user = new AppUsers
+        //    //{
+        //    //    UserName = UserName.ToLower(),
+        //    //    PasswordHash = HashPass.ComputeHash(Encoding.UTF8.GetBytes(Password)),
+        //    //    PasswordSalt = HashPass.Key
+        //    //};
+        //    //dataContext.Users.Add(user);
+        //    //int Result = await dataContext.SaveChangesAsync();
+        //    //return Ok(Result);
+        //    return Ok();
 
-        }
+        //}
 
 
         /// <summary>
@@ -73,23 +93,23 @@ namespace Security_API_Template.Controllers
         /// <param name="UserName"></param>
         /// <param name="PassWord"></param>
         /// <returns></returns>
-        [HttpPost("AddNewUser")]
-        public async Task<ActionResult<int>> AddNewUser2(string UserName, string PassWord)
-        {
-            if (await UserExists(UserName)) { return BadRequest("اسم المستخدم مسجل من قبل..الرجاء اختيار اسم مستخدم جديد"); }
-            using var HashPass = new HMACSHA512();
-            //var user = new AppUsers
-            //{
-            //    UserName = UserName.ToLower(),
-            //    PasswordHash = HashPass.ComputeHash(Encoding.UTF8.GetBytes(PassWord)),
-            //    PasswordSalt = HashPass.Key
-            //};
-            //dataContext.Users.Add(user);
-            //int Result = await dataContext.SaveChangesAsync();
-            //return Ok(Result);
-            return Ok();
+        //[HttpPost("AddNewUser")]
+        //public async Task<ActionResult<int>> AddNewUser2(string UserName, string PassWord)
+        //{
+        //    if (await UserExists(UserName)) { return BadRequest("اسم المستخدم مسجل من قبل..الرجاء اختيار اسم مستخدم جديد"); }
+        //    using var HashPass = new HMACSHA512();
+        //    //var user = new AppUsers
+        //    //{
+        //    //    UserName = UserName.ToLower(),
+        //    //    PasswordHash = HashPass.ComputeHash(Encoding.UTF8.GetBytes(PassWord)),
+        //    //    PasswordSalt = HashPass.Key
+        //    //};
+        //    //dataContext.Users.Add(user);
+        //    //int Result = await dataContext.SaveChangesAsync();
+        //    //return Ok(Result);
+        //    return Ok();
 
-        }
+        //}
 
         /// <summary>
         /// ///////////////////////////////////From Body
@@ -116,11 +136,11 @@ namespace Security_API_Template.Controllers
         //    //return Ok(new UserTokenDTO { UserName = user.UserName, Token = tokenService.CreateToken(user) });
         //}
 
-        private async Task<bool> UserExists(string username)
-        {
-            return await dataContext.Users.AnyAsync(u => u.UserName == username.ToLower());
+        //private async Task<bool> UserExists(string username)
+        //{
+        //    return await dataContext.Users.AnyAsync(u => u.UserName == username.ToLower());
 
-        }
+        //}
 
         #endregion Add New User
 
@@ -136,66 +156,11 @@ namespace Security_API_Template.Controllers
         /// 
         [AllowAnonymous]
         [HttpPost("Login/{username}/{password}")]
-        public async Task<ActionResult<UserTokenDTO>> Login(string username, string password)
+        public async Task<ActionResult<UserTokenDTO>> Login(string username, string password, [FromBody] UserDTO userDTO)
         {
-            var user = await dataContext.Users.FirstOrDefaultAsync(u => u.UserName == username.ToLower());
-            if (user == null) { return Unauthorized("اسم المستخدم خطاء"); }
+            var user = await _Iuser.LoginAsync(username, password, userDTO);
+            return user.UserName == null? Unauthorized(user.Error) : user;
 
-            using var hashPass = new HMACSHA512(user.PasswordSalt);
-            var computeHash = hashPass.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            for (int i = 0; i < computeHash.Length; i++)
-            {
-                if (computeHash[i] != user.PasswordHash[i]) { return Unauthorized("كلمة المرور خطاء"); }
-            }
-            return Ok(new UserTokenDTO { UserName = user.UserName, Token = tokenService.CreateToken(user) });
-        }
-
-        /// <summary>
-        /// //////////////////////////////////////////////From Parameters
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        /// 
-        [AllowAnonymous]
-        [HttpPost("Login2")]
-        public async Task<ActionResult<UserTokenDTO>> Login2(string username, string password)
-        {
-            var user = await dataContext.Users.FirstOrDefaultAsync(u => u.UserName == username.ToLower());
-            if (user == null) { return Unauthorized("اسم المستخدم خطاء"); }
-
-            using var hashPass = new HMACSHA512(user.PasswordSalt);
-            var computeHash = hashPass.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            for (int i = 0; i < computeHash.Length; i++)
-            {
-                if (computeHash[i] != user.PasswordHash[i]) { return Unauthorized("كلمة المرور خطاء"); }
-            }
-            return Ok(new UserTokenDTO { UserName = user.UserName, Token = tokenService.CreateToken(user) });
-        }
-
-        /// <summary>
-        /// ///////////////////////////////////////////From Body
-        /// </summary>
-        /// <param name="userDTO"></param>
-        /// <returns></returns>
-        /// 
-        [AllowAnonymous]
-        [HttpPost("Login")]
-        public async Task<ActionResult<UserTokenDTO>> Login([FromBody] UserDTO userDTO)
-        {
-            var user = await dataContext.Users.FirstOrDefaultAsync(u => u.UserName == userDTO.UserName.ToLower());
-            if (user == null) { return Unauthorized("اسم المستخدم خطاء"); }
-
-            using var hashPass = new HMACSHA512(user.PasswordSalt);
-            var computeHash = hashPass.ComputeHash(Encoding.UTF8.GetBytes(userDTO.Password));
-
-            for (int i = 0; i < computeHash.Length; i++)
-            {
-                if (computeHash[i] != user.PasswordHash[i]) { return Unauthorized("كلمة المرور خطاء"); }
-            }
-            return Ok(new UserTokenDTO { UserName = user.UserName, Token = tokenService.CreateToken(user) }); ;
         }
 
         #endregion User Login

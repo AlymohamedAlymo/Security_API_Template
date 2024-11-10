@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Security_API_Template.Data.Entites;
 using Security_API_Template.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,6 +26,8 @@ namespace Security_API_Template.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
+                //Expires = DateTime.UtcNow.AddDays(3),
+
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = creds
             };

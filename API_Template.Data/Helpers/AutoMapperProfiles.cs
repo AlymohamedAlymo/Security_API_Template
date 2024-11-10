@@ -1,11 +1,7 @@
 ﻿using API_Template.Data.Data.DTOs;
 using AutoMapper;
 using Security_API_Template.Data.Entites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Security_API_Template.Extensions;
 
 namespace API_Template.Data.Helpers
 {
@@ -13,7 +9,10 @@ namespace API_Template.Data.Helpers
     {
         public AutoMapperProfiles() 
         {
-            CreateMap<AppUsers, MemberDTO>();
+            CreateMap<AppUsers, MemberDTO>()
+                .ForMember(m =>m.Age, f => f.MapFrom(x => x.DateOfBirth.CalculateAge()))
+                .ForMember(m => m.PhotoUrl, f => f.MapFrom(u => u.Photos.FirstOrDefault(x => x.IsMain)!.Url));
+
             CreateMap<Photo, PhotoDTO>();
         }
     }

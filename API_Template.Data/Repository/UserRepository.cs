@@ -1,33 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API_Template.Data.Data.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Security_API_Template.Data.Context;
 using Security_API_Template.Data.DTOs;
 using Security_API_Template.Data.Entites;
 using Security_API_Template.Interfaces;
-using Security_API_Template.Services;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Security_API_Template.Repository
 {
-    public class UserRepository(DataContext context, ITokenService tokenService) : IUser
+    public class UserRepository(DataContext context, ITokenService tokenService, IMapper mapper) : IUser
     {
-        public async Task<AppUsers?> GetUserByIdAsync(int id)
+        public async Task<MemberDTO?> GetUserByIdAsync(int id)
         {
-            return await context.Users.FindAsync(id);
+            return  await context.Users
+                .Where(x => x.Id == id)
+                .ProjectTo<MemberDTO>(mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
         }
 
-        public async Task<AppUsers?> GetUserByUserNameAsync(string userName)
+        public async Task<MemberDTO?> GetUserByUserNameAsync(string userName)
         {
+
             return await context.Users
-                .Include(x => x.Photos)
-                .SingleOrDefaultAsync(u => u.UserName == userName);
+                .Where(u => u.UserName == userName)
+                .ProjectTo<MemberDTO>(mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+            
         }
 
-        public async Task<IEnumerable<AppUsers>> GetUsersAsync()
+        public async Task<IEnumerable<MemberDTO>> GetUsersAsync()
         {
             return await context.Users
-                .Include(x => x.Photos)
+                .ProjectTo<MemberDTO>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 

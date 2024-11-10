@@ -2,60 +2,34 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Security_API_Template.Data.Context;
 using Security_API_Template.Data.DTOs;
-using Security_API_Template.Data.Entites;
 using Security_API_Template.Interfaces;
-using Security_API_Template.Repository;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Security_API_Template.Controllers
 {
     [Authorize]
 
-    public class UsersController(IUser _Iuser, IMapper mapper) : BaseApiController
+    public class UsersController(IUser _Iuser) : BaseApiController
     {
-        /// <summary>
-        /// ///////////////////////////////////Get All Users
-        /// </summary>
-        /// <returns></returns>
-        /// 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
         {
             var users = await _Iuser.GetUsersAsync();
-            var userReterned = mapper.Map<MemberDTO>(users);
-            return Ok(userReterned);
+            return Ok(users);
         }
 
-        /// <summary>
-        /// /////////////////////////////////Get User By ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MemberDTO>> GetUserById(int id)
         {
             var user = await _Iuser.GetUserByIdAsync(id);
-            var userReterned = mapper.Map<MemberDTO>(user);
-            return user == null ? NotFound() : userReterned;
+            return user == null ? NotFound() : user;
         }
 
-        /// <summary>
-        /// /////////////////////////////////Get User By UserName
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// 
         [HttpGet("{UserName}")]
         public async Task<ActionResult<MemberDTO>> GetUserByUserName(string UserName)
         {
             var user = await _Iuser.GetUserByUserNameAsync(UserName);
-            var userReterned = mapper.Map<MemberDTO>(user);
-            return user == null ? NotFound() : userReterned;
+            return user == null ? NotFound() : user;
         }
 
 
@@ -147,13 +121,6 @@ namespace Security_API_Template.Controllers
         #region User Login
 
 
-        /// <summary>
-        /// /////////////////////////////////////From URL
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        /// 
         [AllowAnonymous]
         [HttpPost("Login/{username}/{password}")]
         public async Task<ActionResult<UserTokenDTO>> Login(string username, string password, [FromBody] UserDTO userDTO)

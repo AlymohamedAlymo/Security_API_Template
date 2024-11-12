@@ -2,7 +2,7 @@
 
 namespace Security_API_Template.Data.DTOs
 {
-    public class UserDTO
+    public class UserDto
     {
         [Required]
         [StringLength(10, MinimumLength = 1)]

@@ -14,28 +14,36 @@ namespace Security_API_Template.Repository
 {
     public class UserRepository(DataContext context, ITokenService tokenService, IMapper mapper) : IUser
     {
-        public async Task<MemberDTO?> GetUserByIdAsync(int id)
+        public async Task<MemberDto?> GetUserByIdAsync(int id)
         {
             return  await context.Users
                 .Where(x => x.Id == id)
-                .ProjectTo<MemberDTO>(mapper.ConfigurationProvider)
+                .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<MemberDTO?> GetUserByUserNameAsync(string userName)
+        public async Task<MemberDto?> GetMemberByUserNameAsync(string userName)
         {
 
             return await context.Users
-                .Where(u => u.UserName == userName)
-                .ProjectTo<MemberDTO>(mapper.ConfigurationProvider)
+                .Where(u => u.UserName == userName.ToLower())
+                .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
             
         }
 
-        public async Task<IEnumerable<MemberDTO>> GetUsersAsync()
+        public async Task<AppUsers?> GetUserByUserNameAsync(string userName)
+        {
+
+            return await context.Users.SingleOrDefaultAsync(u => u.UserName == userName.ToLower());
+
+        }
+
+
+        public async Task<IEnumerable<MemberDto>> GetUsersAsync()
         {
             return await context.Users
-                .ProjectTo<MemberDTO>(mapper.ConfigurationProvider)
+                .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
@@ -49,7 +57,7 @@ namespace Security_API_Template.Repository
             context.Entry(users).State = EntityState.Modified;
         }
 
-        public async Task<UserTokenDTO> LoginAsync(string username, string password, [FromBody] UserDTO userDTO)
+        public async Task<UserTokenDto> LoginAsync(string username, string password, [FromBody] UserDto userDTO)
         {
             var _UserName = string.Empty;
             var _Password = string.Empty;
@@ -66,7 +74,7 @@ namespace Security_API_Template.Repository
             }
 
             var user = await context.Users.FirstOrDefaultAsync(u => u.UserName == _UserName);
-            if (user == null) { return new UserTokenDTO { UserName = null!, Token = null!, Error = "اسم المستخدم خطاء" }; }
+            if (user == null) { return new UserTokenDto { UserName = null!, Token = null!, Error = "اسم المستخدم خطاء" }; }
 
             using var hashPass = new HMACSHA512(user.PasswordSalt);
             var computeHash = hashPass.ComputeHash(Encoding.UTF8.GetBytes(_Password));
@@ -75,10 +83,10 @@ namespace Security_API_Template.Repository
             {
                 if (computeHash[i] != user.PasswordHash[i])
                 {
-                    return new UserTokenDTO { UserName = null!, Token = null!, Error = "كلمة المرور خطاء" };
+                    return new UserTokenDto { UserName = null!, Token = null!, Error = "كلمة المرور خطاء" };
                 }
             }
-            return new UserTokenDTO { UserName = user.UserName, Token = tokenService.CreateToken(user), Error = null! };
+            return new UserTokenDto { UserName = user.UserName, Token = tokenService.CreateToken(user), Error = null! };
 
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace API_Template.Data.Data.DTOs
 {
-    public class MemberDTO
+    public class MemberDto
     {
         public int Id { get; set; }
         public string? UserName { get; set; }
@@ -22,6 +22,6 @@ namespace API_Template.Data.Data.DTOs
         public string? Interests { get; set; }
         public string? City { get; set; }
         public string? Country { get; set; }
-        public List<PhotoDTO>? Photos { get; set; }
+        public List<PhotoDto>? Photos { get; set; }
     }
 }

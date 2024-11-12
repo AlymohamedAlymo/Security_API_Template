@@ -10,10 +10,12 @@ namespace Security_API_Template.Interfaces
     {
         void UpdateUser(AppUsers users);
         Task<bool> SaveAllAsync();
-        Task<IEnumerable<MemberDTO>> GetUsersAsync();
-        Task<MemberDTO?> GetUserByIdAsync(int id);
-        Task<MemberDTO?> GetUserByUserNameAsync(string userName);
-        Task<UserTokenDTO> LoginAsync(string username, string password, [FromBody] UserDTO userDTO);
+        Task<IEnumerable<MemberDto>> GetUsersAsync();
+        Task<MemberDto?> GetUserByIdAsync(int id);
+        Task<AppUsers?> GetUserByUserNameAsync(string userName);
+        Task<MemberDto?> GetMemberByUserNameAsync(string userName);
+
+        Task<UserTokenDto> LoginAsync(string username, string password, [FromBody] UserDto userDTO);
 
 
     }

@@ -1,6 +1,6 @@
 ﻿namespace Security_API_Template.Data.DTOs
 {
-    public class UserTokenDTO
+    public class UserTokenDto
     {
         public required string UserName { get; set; }
 

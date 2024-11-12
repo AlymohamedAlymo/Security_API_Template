@@ -9,11 +9,12 @@ namespace API_Template.Data.Helpers
     {
         public AutoMapperProfiles() 
         {
-            CreateMap<AppUsers, MemberDTO>()
+            CreateMap<AppUsers, MemberDto>()
                 .ForMember(m =>m.Age, f => f.MapFrom(x => x.DateOfBirth.CalculateAge()))
                 .ForMember(m => m.PhotoUrl, f => f.MapFrom(u => u.Photos.FirstOrDefault(x => x.IsMain)!.Url));
 
-            CreateMap<Photo, PhotoDTO>();
+            CreateMap<Photo, PhotoDto>();
+            CreateMap<MemberUpdateDto, AppUsers>();
         }
     }
 }

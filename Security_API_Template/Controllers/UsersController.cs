@@ -3,32 +3,35 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Security_API_Template.Data.DTOs;
+using Security_API_Template.Data.Entites;
 using Security_API_Template.Interfaces;
+using Security_API_Template.Repository;
+using System.Security.Claims;
 
 namespace Security_API_Template.Controllers
 {
     [Authorize]
 
-    public class UsersController(IUser _Iuser) : BaseApiController
+    public class UsersController(IUser _IUser, IMapper mapper) : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await _Iuser.GetUsersAsync();
+            var users = await _IUser.GetUsersAsync();
             return Ok(users);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<MemberDTO>> GetUserById(int id)
+        public async Task<ActionResult<MemberDto>> GetUserById(int id)
         {
-            var user = await _Iuser.GetUserByIdAsync(id);
+            var user = await _IUser.GetUserByIdAsync(id);
             return user == null ? NotFound() : user;
         }
 
         [HttpGet("{UserName}")]
-        public async Task<ActionResult<MemberDTO>> GetUserByUserName(string UserName)
+        public async Task<ActionResult<MemberDto>> GetUserByUserName(string UserName)
         {
-            var user = await _Iuser.GetUserByUserNameAsync(UserName);
+            var user = await _IUser.GetMemberByUserNameAsync(UserName);
             return user == null ? NotFound() : user;
         }
 
@@ -123,14 +126,33 @@ namespace Security_API_Template.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login/{username}/{password}")]
-        public async Task<ActionResult<UserTokenDTO>> Login(string username, string password, [FromBody] UserDTO userDTO)
+        public async Task<ActionResult<UserTokenDto>> Login(string username, string password, [FromBody] UserDto userDTO)
         {
-            var user = await _Iuser.LoginAsync(username, password, userDTO);
+            var user = await _IUser.LoginAsync(username, password, userDTO);
             return user.UserName == null? Unauthorized(user.Error) : user;
 
         }
 
         #endregion User Login
+
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userName == null) { return BadRequest("لم يتم العثور على اسم المستخدم في الرمز"); }
+
+            var user = await _IUser.GetUserByUserNameAsync(userName);
+
+            if (user == null) { return BadRequest("لم يتم العثور على المستخدم"); }
+
+            mapper.Map(memberUpdateDto, user);
+
+            if (await _IUser.SaveAllAsync()) { return NoContent(); }
+
+            return BadRequest("فشلت عملية تعديل المستخدم");
+        }
 
     }
 }

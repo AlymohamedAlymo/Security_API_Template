@@ -1,10 +1,9 @@
-﻿using API_Template.Data.Data.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using Security_API_Template.Data.DTOs;
-using Security_API_Template.Data.Entites;
+﻿using Microsoft.AspNetCore.Mvc;
+using API_Template.Data.ViewModels;
+using API_Template.Data.DataBase.Entites;
 using System.Text;
 
-namespace Security_API_Template.Interfaces
+namespace API_Template.Data.Interfaces
 {
     public interface IUser
     {
@@ -15,7 +14,7 @@ namespace Security_API_Template.Interfaces
         Task<AppUsers?> GetUserByUserNameAsync(string userName);
         Task<MemberDto?> GetMemberByUserNameAsync(string userName);
 
-        Task<UserTokenDto> LoginAsync(string username, string password, [FromBody] UserDto userDTO);
+        Task<UserTokenVM> LoginAsync(string username, string password, [FromBody] UserVM userDTO);
 
 
     }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Security_API_Template.Data.Context;
-using Security_API_Template.Data.SeedData;
-using Security_API_Template.Extensions;
-using Security_API_Template.Middleware;
+using API_Template.Data.DataBase.Context;
+using API_Template.Api.SeedData;
+using API_Template.Api.Extensions;
+using API_Template.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 

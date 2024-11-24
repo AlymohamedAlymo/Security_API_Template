@@ -1,8 +1,11 @@
-﻿using Security_API_Template.CustomExceptions;
+﻿using API_Template.Api.CustomExceptions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
-namespace Security_API_Template.Middleware
+namespace API_Template.Api.Middleware
 {
     public class ExceptionMiddleware(RequestDelegate request, ILogger<ExceptionMiddleware> logger, IHostEnvironment environment)
     {

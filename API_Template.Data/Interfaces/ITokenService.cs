@@ -1,6 +1,6 @@
-﻿using Security_API_Template.Data.Entites;
+﻿using API_Template.Data.DataBase.Entites;
 
-namespace Security_API_Template.Interfaces
+namespace API_Template.Data.Interfaces
 {
     public interface ITokenService
     {

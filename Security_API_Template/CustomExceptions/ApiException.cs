@@ -1,4 +1,4 @@
-﻿namespace Security_API_Template.CustomExceptions
+﻿namespace API_Template.Api.CustomExceptions
 {
     public class ApiException(int statusCode, string message, string? details)
     {

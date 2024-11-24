@@ -1,6 +1,6 @@
-@Security_API_Template_HostAddress = http://localhost:5257
+@Security_API_Template_HostAddress = https://localhost:7051
 
-GET {{Security_API_Template_HostAddress}}/weatherforecast/
+GET {{Security_API_Template_HostAddress}}/Program/
 Accept: application/json
 
 ###

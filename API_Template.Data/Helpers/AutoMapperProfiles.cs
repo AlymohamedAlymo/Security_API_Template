@@ -1,7 +1,6 @@
-﻿using API_Template.Data.Data.DTOs;
+﻿using API_Template.Data.ViewModels;
 using AutoMapper;
-using Security_API_Template.Data.Entites;
-using Security_API_Template.Extensions;
+using API_Template.Data.DataBase.Entites;
 
 namespace API_Template.Data.Helpers
 {
@@ -13,8 +12,8 @@ namespace API_Template.Data.Helpers
                 .ForMember(m =>m.Age, f => f.MapFrom(x => x.DateOfBirth.CalculateAge()))
                 .ForMember(m => m.PhotoUrl, f => f.MapFrom(u => u.Photos.FirstOrDefault(x => x.IsMain)!.Url));
 
-            CreateMap<Photo, PhotoDto>();
-            CreateMap<MemberUpdateDto, AppUsers>();
+            CreateMap<Photo, PhotoVM>();
+            CreateMap<MemberUpdateVM, AppUsers>();
         }
     }
 }

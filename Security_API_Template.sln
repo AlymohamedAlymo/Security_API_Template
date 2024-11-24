@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security_API_Template", "Security_API_Template\Security_API_Template.csproj", "{EB5F9BBA-2E3D-48B2-8E66-BA79EE93B35C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Template.Api", "Security_API_Template\API_Template.Api.csproj", "{EB5F9BBA-2E3D-48B2-8E66-BA79EE93B35C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Template.Data", "API_Template.Data\API_Template.Data.csproj", "{08709AF9-6BB8-451F-B1A9-FF2910A61C4E}"
 EndProject

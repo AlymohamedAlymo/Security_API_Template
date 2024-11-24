@@ -1,14 +1,13 @@
-﻿using API_Template.Data.Data.DTOs;
+﻿using API_Template.Data.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Security_API_Template.Data.DTOs;
-using Security_API_Template.Data.Entites;
-using Security_API_Template.Interfaces;
-using Security_API_Template.Repository;
+using API_Template.Data.DataBase.Entites;
+using API_Template.Data.Interfaces;
+using API_Template.Data.Repositories;
 using System.Security.Claims;
 
-namespace Security_API_Template.Controllers
+namespace API_Template.Api.Controllers
 {
     [Authorize]
 
@@ -126,7 +125,7 @@ namespace Security_API_Template.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login/{username}/{password}")]
-        public async Task<ActionResult<UserTokenDto>> Login(string username, string password, [FromBody] UserDto userDTO)
+        public async Task<ActionResult<UserTokenVM>> Login(string username, string password, [FromBody] UserVM userDTO)
         {
             var user = await _IUser.LoginAsync(username, password, userDTO);
             return user.UserName == null? Unauthorized(user.Error) : user;
@@ -137,7 +136,7 @@ namespace Security_API_Template.Controllers
 
 
         [HttpPut]
-        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        public async Task<ActionResult> UpdateUser(MemberUpdateVM memberUpdateDto)
         {
             var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
